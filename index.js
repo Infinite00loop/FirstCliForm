@@ -18,12 +18,16 @@ function onSignUp(){
     localStorage.setItem(email_,myObjSerial);
 
     var newList=document.createElement('li');
-    var text=name_+" - "+email_+" - "+phone_;
+    var text=name_+" - "+email_+" - "+phone_+" - ";
     newList.appendChild(document.createTextNode(text));
     var delButton=document.createElement('button');
     delButton.className='delete';
     delButton.appendChild(document.createTextNode('Delete'));
     newList.appendChild(delButton);
+    var editButton=document.createElement('button');
+    editButton.className='edit';
+    editButton.appendChild(document.createTextNode('Edit'));
+    newList.appendChild(editButton);
     list.appendChild(newList);
 
     // localStorage.setItem('Name',document.getElementById('idx1').value)
@@ -51,6 +55,7 @@ function onSignUp(){
 // console.log(myObjDeserialized)
 
 function removeElement(e){
+    e.preventDefault();
     if(e.target.classList.contains('delete')){
         if(confirm('Are you sure to delete ?')){
             var li=e.target.parentElement;
@@ -58,5 +63,15 @@ function removeElement(e){
             localStorage.removeItem(email);
             list.removeChild(li);
         }
+    }
+    else if(e.target.classList.contains('edit')){
+        var li=e.target.parentElement;
+        const arr=li.textContent.split(" - ");
+        var email=arr[1];
+        localStorage.removeItem(email);
+        document.getElementById('idx1').value=arr[0]
+        document.getElementById('idx2').value=arr[1]
+        document.getElementById('idx3').value=arr[2]
+        list.removeChild(li);
     }
 }
