@@ -79,9 +79,27 @@ function removeElement(e){
     if(e.target.classList.contains('delete')){
         if(confirm('Are you sure to delete ?')){
             var li=e.target.parentElement;
-            var email=li.textContent.split(" - ")[1];
-            localStorage.removeItem(email);
-            list.removeChild(li);
+            var email_=li.textContent.split(" - ")[1];
+            console.log(email_)
+            axios.get('https://crudcrud.com/api/057c1b800809490aadf6f4857249d836/appointments',{
+                params:{email: email_}
+            })
+            .then(
+                (response)=>{
+                    console.log(response);
+                    for(var i=0;i<response.data.length;i++){
+                        if(response.data[i].email==email_)
+                        axios
+                        .delete(`https://crudcrud.com/api/057c1b800809490aadf6f4857249d836/appointments/${response.data[i]._id}`)
+                        .then(res=>console.log(res))
+                        .catch(err=>console.log(err))
+                    }
+                }
+            )
+            .catch(
+                (err)=>console.log(err)
+            )
+            list.removeChild(li)
         }
     }
     else if(e.target.classList.contains('edit')){
