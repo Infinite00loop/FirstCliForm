@@ -2,6 +2,21 @@ var list=document.getElementById('list-items');
 
 list.addEventListener('click',removeElement);
 
+window.addEventListener('DOMContentLoaded',()=>{
+    axios.get('https://crudcrud.com/api/057c1b800809490aadf6f4857249d836/appointments')
+    .then(
+        (response)=>{
+            console.log(response);
+            for(var i=0;i<response.data.length;i++){
+                showData(response.data[i]);
+            }
+        }
+    )
+    .catch(
+        (err)=>console.log(err)
+    )
+})
+
 
 function onSignUp(){
     var name_=document.getElementById('idx1').value;
