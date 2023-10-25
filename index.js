@@ -13,22 +13,13 @@ function onSignUp(){
         email:email_,
         phone:phone_
     };
+    axios.post('https://crudcrud.com/api/057c1b800809490aadf6f4857249d836/appointments',myObj)
+    .then((res)=>console.log(res))
+    .catch((err)=>console.log(err));
+    // var myObjSerial=JSON.stringify(myObj);
+    // localStorage.setItem(email_,myObjSerial);
+    showData(myObj);
 
-    var myObjSerial=JSON.stringify(myObj);
-    localStorage.setItem(email_,myObjSerial);
-
-    var newList=document.createElement('li');
-    var text=name_+" - "+email_+" - "+phone_+" - ";
-    newList.appendChild(document.createTextNode(text));
-    var delButton=document.createElement('button');
-    delButton.className='delete';
-    delButton.appendChild(document.createTextNode('Delete'));
-    newList.appendChild(delButton);
-    var editButton=document.createElement('button');
-    editButton.className='edit';
-    editButton.appendChild(document.createTextNode('Edit'));
-    newList.appendChild(editButton);
-    list.appendChild(newList);
 
     // localStorage.setItem('Name',document.getElementById('idx1').value)
     // localStorage.setItem('Email',document.getElementById('idx2').value)
@@ -54,6 +45,20 @@ function onSignUp(){
 // let myObjDeserialized=JSON.parse(localStorage.getItem('myObj'));
 // console.log(myObjDeserialized)
 
+function showData(obj){
+    var newList=document.createElement('li');
+    var text=obj.name+" - "+obj.email+" - "+obj.phone+" - ";
+    newList.appendChild(document.createTextNode(text));
+    var delButton=document.createElement('button');
+    delButton.className='delete';
+    delButton.appendChild(document.createTextNode('Delete'));
+    newList.appendChild(delButton);
+    var editButton=document.createElement('button');
+    editButton.className='edit';
+    editButton.appendChild(document.createTextNode('Edit'));
+    newList.appendChild(editButton);
+    list.appendChild(newList);
+}
 function removeElement(e){
     e.preventDefault();
     if(e.target.classList.contains('delete')){
