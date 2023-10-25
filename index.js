@@ -2,6 +2,8 @@ var list=document.getElementById('list-items');
 
 list.addEventListener('click',removeElement);
 
+var anonymousId;
+
 window.addEventListener('DOMContentLoaded',()=>{
     axios.get('https://crudcrud.com/api/057c1b800809490aadf6f4857249d836/appointments')
     .then(
@@ -28,9 +30,16 @@ function onSignUp(){
         email:email_,
         phone:phone_
     };
-    axios.post('https://crudcrud.com/api/057c1b800809490aadf6f4857249d836/appointments',myObj)
-    .then((res)=>console.log(res))
-    .catch((err)=>console.log(err));
+    if(anonymousId==undefined){
+        axios.post('https://crudcrud.com/api/057c1b800809490aadf6f4857249d836/appointments',myObj)
+        .then((res)=>console.log(res))
+        .catch((err)=>console.log(err));
+    }
+    else{
+        axios.put(`https://crudcrud.com/api/057c1b800809490aadf6f4857249d836/appointments/${anonymousId}`,myObj)
+        .then((res)=>console.log(res))
+        .catch((err)=>console.log(err));
+    }
     // var myObjSerial=JSON.stringify(myObj);
     // localStorage.setItem(email_,myObjSerial);
     showData(myObj);
@@ -105,11 +114,25 @@ function removeElement(e){
     else if(e.target.classList.contains('edit')){
         var li=e.target.parentElement;
         const arr=li.textContent.split(" - ");
-        var email=arr[1];
-        localStorage.removeItem(email);
-        document.getElementById('idx1').value=arr[0]
-        document.getElementById('idx2').value=arr[1]
-        document.getElementById('idx3').value=arr[2]
+        var email_=arr[1];
+        axios.get('https://crudcrud.com/api/057c1b800809490aadf6f4857249d836/appointments')
+        .then(
+            (response)=>{
+                console.log(response);
+                for(var i=0;i<response.data.length;i++){
+                    if(response.data[i].email==email_){
+                        document.getElementById('idx1').value=response.data[i].name
+                        document.getElementById('idx2').value=response.data[i].email
+                        document.getElementById('idx3').value=response.data[i].phone
+                        anonymousId=response.data[i]._id;
+                    }
+
+                }
+            }
+        )
+        .catch(
+            (err)=>console.log(err)
+        )
         list.removeChild(li);
     }
 }
